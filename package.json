@@ -1,0 +1,74 @@
+{
+  "name": "project-compass",
+  "version": "1.2.2",
+  "description": "本地优先的 AI 售前项目指导工作台",
+  "author": "孔硕",
+  "private": true,
+  "type": "module",
+  "main": "electron-main.cjs",
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning server.mjs",
+    "desktop": "electron .",
+    "test": "node --disable-warning=ExperimentalWarning --test workbench.test.mjs",
+    "pack": "node scripts/prepare-vendor.mjs && electron-builder --win --x64 --dir",
+    "dist": "node scripts/prepare-vendor.mjs && electron-builder --win nsis --x64",
+    "prepare": "node scripts/prepare-vendor.mjs"
+  },
+  "engines": {
+    "node": ">=22.13"
+  },
+  "dependencies": {
+    "jszip": "3.10.1",
+    "mammoth": "1.13.0",
+    "marked": "18.1.2",
+    "pdf-parse": "2.4.5"
+  },
+  "devDependencies": {
+    "electron": "45.1.0",
+    "electron-builder": "26.18.0"
+  },
+  "build": {
+    "appId": "com.kongshuo.projectcompass",
+    "productName": "项目指南针",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "electron-main.cjs",
+      "server.mjs",
+      "documents.mjs",
+      "documents-worker.mjs",
+      "export-dashboard.mjs",
+      "public/**",
+      "package.json"
+    ],
+    "asarUnpack": [
+      "node_modules/pdf-parse/**",
+      "node_modules/pdfjs-dist/**",
+      "node_modules/@napi-rs/**"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico",
+      "signExecutable": false
+    },
+    "artifactName": "ProjectCompass-Setup-${version}-${arch}.${ext}",
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowElevation": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": "always",
+      "shortcutName": "项目指南针",
+      "runAfterFinish": false,
+      "deleteAppDataOnUninstall": false,
+      "installerLanguages": [
+        "zh_CN",
+        "en_US"
+      ],
+      "language": "2052",
+      "include": "build/installer.nsh"
+    }
+  }
+}
