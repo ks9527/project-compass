@@ -11,7 +11,7 @@ import JSZip from 'jszip';
 const tempRoot=process.env.WORKBENCH_TEST_TEMP_DIR||os.tmpdir();
 const temp=mkdtempSync(path.join(tempRoot,'workbench-test-'));
 const mock=path.join(temp,'mock-fetch.mjs');
-writeFileSync(mock, `globalThis.fetch=async(url, options)=>{const b=JSON.parse(options.body); if(url!=='https://api.deepseek.com/v1/chat/completions'||options.headers.Authorization!=='Bearer fake-test-key-only')throw new Error('mock verification failed'); let content='测试建议：核实预算与决策人。';if(b.messages[0].content.includes('连接测试'))content='OK';if(b.messages[0].content.includes('资料提取助手'))content=JSON.stringify({customer:'虚构文档客户',background:'来源：test.txt，客户明确提出100席位需求',stakeholders:[{name:'测试经理',role:'技术负责人',notes:'test.txt：测试经理负责技术评估'}],evidence:[{field:'客户',source:'test.txt',quote:'虚构文档客户'}]});return new Response(JSON.stringify({choices:[{message:{content}}]}),{headers:{'Content-Type':'application/json'}});};`);
+writeFileSync(mock, `globalThis.fetch=async(url, options)=>{const b=JSON.parse(options.body); if(url!=='https://api.deepseek.com/v1/chat/completions'||options.headers.Authorization!=='Bearer fake-test-key-only')throw new Error('mock verification failed'); let content='测试建议：核实预算与决策人。';if(b.messages[0].content.includes('连接测试'))content='OK';if(b.messages[0].content.includes('资料提取助手'))content=JSON.stringify({customer:'虚构文档客户',background:'来源：test.txt，客户明确提出100席位需求',stakeholders:[{name:'测试经理',role:'技术负责人',notes:'test.txt：测试经理负责技术评估'}],meetings:[{date:'2026-11-06',title:'需求交流',notes:'来源：test.txt；预算未确认'}],unclassified:'test.txt：一条待归类的审批线索',evidence:[{field:'客户',source:'test.txt',quote:'虚构文档客户'}]});return new Response(JSON.stringify({choices:[{message:{content}}]}),{headers:{'Content-Type':'application/json'}});};`);
 const port=14317, base=`http://127.0.0.1:${port}`;
 let child;
 const request=async(route,method='GET',body,headers={})=>fetch(base+route,{method,headers:{'Content-Type':'application/json','X-Workbench':'1',...headers},...(body?{body:JSON.stringify(body)}:{})});
@@ -29,7 +29,7 @@ test('首次配置必须经过连接测试，文档提取只返回草稿、不�
  let r=await request('/api/settings/test','POST',{});assert.equal(r.status,200);assert.equal((await r.json()).connected,true);
  const before=(await(await request('/api/state')).json()).projects;
  r=await request('/api/extract','POST',{text:'虚构文档资料'});assert.equal(r.status,400);
- r=await request('/api/extract','POST',{text:'【test.txt】虚构文档客户需要100席位。测试经理负责技术评估。',confirmed:true});assert.equal(r.status,200);const result=await r.json();assert.equal(result.candidate.customer,'虚构文档客户');assert.equal(result.candidate.stage,'');assert.equal(result.evidence[0].source,'test.txt');
+ r=await request('/api/extract','POST',{text:'【test.txt】虚构文档客户需要100席位。测试经理负责技术评估。',confirmed:true});assert.equal(r.status,200);const result=await r.json();assert.equal(result.candidate.customer,'虚构文档客户');assert.equal(result.candidate.stage,'');assert.equal(result.evidence[0].source,'test.txt');assert.equal(result.candidate.meetings[0].title,'需求交流');assert.match(result.candidate.background,/待归类的审批线索/);
  assert.deepEqual((await(await request('/api/state')).json()).projects,before);
 });
 

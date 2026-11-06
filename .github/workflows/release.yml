@@ -2,6 +2,8 @@ name: Build Windows installer
 on:
   workflow_dispatch:
   push:
+    branches: [main]
+    paths: ['package.json']
     tags: ['v*']
 permissions:
   contents: read
@@ -25,7 +27,8 @@ jobs:
         run: |
           $version = (Get-Content package.json -Raw | ConvertFrom-Json).version
           "RELEASE_TAG=v$version" >> $env:GITHUB_ENV
-          Get-ChildItem release/*-Setup-*-x64.exe | ForEach-Object {
+          Copy-Item examples/project-dashboard.html release/ProjectCompass-Dashboard-Example.html
+          Get-ChildItem release/*-Setup-*-x64.exe, release/ProjectCompass-Dashboard-Example.html | ForEach-Object {
             $hash = (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLower()
             "$hash  $($_.Name)"
           } | Set-Content release/SHA256SUMS.txt -Encoding utf8
@@ -39,4 +42,4 @@ jobs:
             Write-Host "Release already exists; existing downloads were preserved."
             exit 0
           }
-          gh release create $env:RELEASE_TAG release/*-Setup-*-x64.exe release/SHA256SUMS.txt --repo $env:GITHUB_REPOSITORY --target $env:GITHUB_SHA --title "Project Compass $env:RELEASE_TAG" --notes-file RELEASE_NOTES.md
+          gh release create $env:RELEASE_TAG release/*-Setup-*-x64.exe release/ProjectCompass-Dashboard-Example.html release/SHA256SUMS.txt --repo $env:GITHUB_REPOSITORY --target $env:GITHUB_SHA --title "Project Compass $env:RELEASE_TAG" --notes-file RELEASE_NOTES.md

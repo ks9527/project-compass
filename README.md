@@ -19,6 +19,12 @@ A local-first AI workspace for presales and solution professionals.
 
 </div>
 
+## New in 1.3
+
+A monochrome desktop workspace with vertically ordered AI guidance. Upload one or more documents, or paste unstructured notes; review the AI payload, then edit or deselect individual records before applying them to project modules. Meetings are included; unclassified clues remain in the background for review. Existing customer and stage values are unchecked by default.
+
+HTML briefs now follow project context → AI assessment → next actions → risks and opportunities → stakeholders and competition → meeting evidence. Overdue actions come first, completed work is collapsed, and missing information is identified without inventing a project success score.
+
 ## From scattered context to a clear path forward
 
 Project Compass brings customer insights, competitive context, meeting notes and project documents into one desktop workspace. Connect your own AI provider to assess the situation, identify actionable next steps and share a self-contained HTML dashboard.

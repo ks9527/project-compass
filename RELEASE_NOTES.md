@@ -1,17 +1,21 @@
-# Project Compass v1.2.2
+# Project Compass v1.3.0
 
-## Privacy cleanup / 隐私修订
+## Workspace / 工作台
 
-- Remove machine-specific paths and cache locations from public documentation.
-- Use standard per-user application storage and a user-selectable installation location.
-- Retain bilingual documentation and offline HTML dashboards.
+- Monochrome design with a quieter sidebar, neutral controls and vertical AI recommendations.
+- Upload multiple documents or paste unstructured notes; new material opens a reviewable AI preparation flow.
+- Review and edit each extracted record, deselect unwanted items, and keep existing customer / stage values by default.
+- Extract meetings and preserve unclassified project clues for human review.
+- Reorganized offline HTML briefs: context, AI assessment, next actions, risks, stakeholders and supporting evidence.
 
-清理公开文档中的个人环境信息；使用标准用户数据目录，安装位置由用户自行选择。
+黑白简约工作台；支持上传文档及粘贴杂乱信息，AI 分类后逐条核对、编辑、选择，再写入各模块。推进建议纵向排列。离线看板优先展示判断和行动，逾期行动在前、已完成项折叠。
 
-## Upgrade / 升级
+## Install / 安装
 
-Before upgrading from v1.2.1 or earlier, export your projects as a JSON backup in the existing app. If the updated app opens an empty workspace, import that backup and configure your model again. Previous data is not deleted or moved.
+Windows 10/11 x64. Run the installer and choose an installation location. The desktop shortcut is created by default. Version 1.2.2 users retain the same application identity and data location. When upgrading from v1.2.1 or earlier, first export a JSON backup from the original app; import it into the new version and configure your model if an empty workspace is shown. Old data is not moved or deleted.
 
-从 v1.2.1 及更早版本升级前，请在原软件中导出 JSON 项目备份。升级后如显示空工作区，请导入备份并重新配置模型。旧数据不会被删除或移动。
+安装位置可自行选择，默认创建桌面快捷方式。1.2.2 用户沿用相同应用标识及数据位置；从 1.2.1 或更早版本升级前请先导出 JSON 备份，必要时导入并重新配置模型。
 
-Windows 10/11 x64. The installer is unsigned. Each user supplies their own API key. Project records and exports are plain text; review content before sharing.
+Supported files: PDF, DOCX, TXT and Markdown; scanned PDF OCR is not supported. Every AI request requires a reviewed payload and explicit confirmation. Configure your own API key. The installer is unsigned.
+
+支持 PDF、DOCX、TXT 和 Markdown；扫描 PDF 暂不支持 OCR。发送前检查内容并确认，每位用户配置自己的 API Key。安装包尚未代码签名。
